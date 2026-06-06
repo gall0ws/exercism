@@ -3,7 +3,29 @@
 ;;; Commentary:
 
 ;;; Code:
+(defun questionp (phrase)
+  (string-match-p "\\? *$" phrase))
+
+(defun silencep (phrase)
+  (string-match-p "^[ \t]*$" phrase))
+
+(defun yellingp (phrase)
+  (string-match-p "^[^a-z]*[A-Z][^a-z]*$" phrase))
+
 (defun response-for (phrase)
+  (let ((case-fold-search nil))
+    (pcase phrase
+      ((and (pred questionp) (pred yellingp))
+       "Calm down, I know what I'm doing!")
+      ((pred questionp)
+       "Sure.")
+      ((pred yellingp)
+       "Whoa, chill out!")
+      ((pred silencep)
+       "Fine. Be that way!")
+      (_ "Whatever."))))
+
+(defun response-for-1 (phrase)
   (let ((case-fold-search nil))
     (cond
      ((string-match-p "^[^a-z]*[A-Z][^a-z]*[^\\?]$" phrase)
