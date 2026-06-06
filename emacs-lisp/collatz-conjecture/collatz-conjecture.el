@@ -3,10 +3,21 @@
 ;;; Commentary:
 
 ;;; Code:
+(defun collatz (number)
+  "Produce the Collatz sequence starting from NUMBER."
+  (when (< number 1) (error "collatz is defined only for positive integers"))
+  (cl-labels
+      ((rec (lst)
+         (pcase (car lst)
+           (1 lst)
+           ((pred cl-evenp)
+            (rec (cons (/ (car lst) 2) lst)))
+           (_ (rec (cons (1+ (* 3 (car lst))) lst))))))
+    (nreverse (rec (list number)))))
 
 (defun steps (number)
   "Count the steps to reach 1 using the Collatz conjecture."
-  (error "Delete this S-Expression and write your own implementation"))
+  (1- (length (collatz number))))
 
 (provide 'collatz-conjecture)
 ;;; collatz-conjecture.el ends here
