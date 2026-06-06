@@ -6,9 +6,9 @@
 (defun sum-digits (n)
   (if (= n 0)
       0
-    (seq-reduce (lambda (acc m) (+ acc (expt m (ceiling (log10 n)))))
-                (mapcar (lambda (c) (- c ?0)) (format "%d" n))
-                0)))
+    (apply #'+ (mapcar (lambda (c)
+                         (expt (- c ?0) (ceiling (log10 n))))
+                       (format "%d" n)))))
 
 (defun armstrong-p (n)
   (= n (sum-digits n)))
